@@ -1,7 +1,3 @@
-import dk.sdu.cbse.common.services.IEntityProcessingService;
-import dk.sdu.cbse.common.services.IGamePluginService;
-import dk.sdu.cbse.common.services.IPostEntityProcessingService;
-
 module dk.sdu.cbse.core {
     requires javafx.controls;
     requires javafx.graphics;
@@ -12,7 +8,7 @@ module dk.sdu.cbse.core {
     exports dk.sdu.cbse.main;
     opens dk.sdu.cbse.main to spring.core, spring.beans, spring.context;
 
-    uses IGamePluginService;
-    uses IEntityProcessingService;
-    uses IPostEntityProcessingService;
+    uses dk.sdu.cbse.common.services.IGamePluginService;
+    uses dk.sdu.cbse.common.services.IEntityProcessingService;
+    uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
 }

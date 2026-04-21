@@ -1,8 +1,3 @@
-import dk.sdu.cbse.common.services.IEntityProcessingService;
-import dk.sdu.cbse.common.services.IGamePluginService;
-import dk.sdu.cbse.playersystem.PlayerControlSystem;
-import dk.sdu.cbse.playersystem.PlayerPlugin;
-
 module Player {
     requires dk.sdu.cbse.common;
     requires java.datatransfer;
@@ -12,6 +7,6 @@ module Player {
 
     uses dk.sdu.cbse.commonbullet.BulletSPI;
 
-    provides IGamePluginService with PlayerPlugin;
-    provides IEntityProcessingService with PlayerControlSystem;
+    provides dk.sdu.cbse.common.services.IGamePluginService with dk.sdu.cbse.playersystem.PlayerPlugin;
+    provides dk.sdu.cbse.common.services.IEntityProcessingService with dk.sdu.cbse.playersystem.PlayerControlSystem;
 }

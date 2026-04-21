@@ -116,7 +116,8 @@
           <arguments>
             <argument>--module-path=mods-mvn</argument>
             <argument>--class-path=libs/*</argument>
-            <argument>--module=dk.sdu.cbse.core/dk.sdu.cbse.main.Main</argument>            <argument>--add-modules javafx.graphics</argument>
+            <argument>--add-modules=Player,Bullet,Asteroids,javafx.graphics</argument>
+            <argument>--module=dk.sdu.cbse.core/dk.sdu.cbse.main.Main</argument>
           </arguments>
         </configuration>
       </plugin>
