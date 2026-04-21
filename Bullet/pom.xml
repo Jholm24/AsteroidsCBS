@@ -9,7 +9,8 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Player</artifactId>
+    <groupId>dk.sdu.cbse.bullet</groupId>
+    <artifactId>Bullet</artifactId>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -23,15 +24,12 @@
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>dk.sdu.cbse.commonbullet</groupId>
             <artifactId>CommonBullet</artifactId>
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-
     </dependencies>
 
 </project>

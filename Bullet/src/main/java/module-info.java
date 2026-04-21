@@ -1,11 +1,13 @@
+import dk.sdu.cbse.common.services.IEntityProcessingService;
+import dk.sdu.cbse.common.services.IGamePluginService;
+import dk.sdu.cbse.commonbullet.BulletSPI;
+
 module Bullet {
+
+    requires CommonBullet;
     requires dk.sdu.cbse.common;
-    requires java.desktop;
-    requires Asteroids;
-    requires javafx.graphics;
 
-    provides dk.sdu.cbse.common.services.IEntityProcessingService with dk.sdu.cbse.bullet.BulletProccessor;
-    provides dk.sdu.cbse.common.services.IPostEntityProcessingService with dk.sdu.cbse.bullet.BulletProccessor;
-
-    exports dk.sdu.cbse.bullet;
+    provides IGamePluginService with dk.sdu.cbse.bullet.BulletPlugin;
+    provides BulletSPI with dk.sdu.cbse.bullet.BulletControlSystem;
+    provides IEntityProcessingService with dk.sdu.cbse.bullet.BulletControlSystem;
 }
