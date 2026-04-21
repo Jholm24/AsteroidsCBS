@@ -1,0 +1,69 @@
+# Maven build artifacts
+target/
+target 2/
+*.jar
+*.war
+*.ear
+*.zip
+
+# Compiled class files
+*.class
+
+# Maven-specific files
+pom.xml.tag
+pom.xml.releaseBackup
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# IDE artifacts
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# JPMS / Module system related
+module-info.class
+META-INF/jpms.args
+
+# Gradle (if used)
+.gradle/
+build/
+
+# VS Code
+.vscode/
+.settings/
+
+# Logs
+*.log
+logs/
+
+# Local environment variables
+.env
+.env.local
+
+# Package managers
+node_modules/
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+*~
+
+# Runtime files
+run/
+*.pid
+
+# Maven mods directory (based on your structure)
+mods-mvn/
