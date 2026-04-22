@@ -14,9 +14,10 @@
     <module>Core</module>
     <module>Common</module>
     <module>Player</module>
-    <module>Asteroids</module>
     <module>CommonBullet</module>
     <module>Bullet</module>
+    <module>CommonAsteroid</module>
+    <module>Asteroid</module>
 
   </modules>
   <properties>
@@ -98,29 +99,6 @@
           <fork>true</fork>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version> 3.5.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>java</executable>
-          <workingDirectory>.</workingDirectory>
-          <arguments>
-            <argument>--module-path=mods-mvn</argument>
-            <argument>--class-path=libs/*</argument>
-            <argument>--add-modules=Player,Bullet,Asteroids,javafx.graphics</argument>
-            <argument>--module=dk.sdu.cbse.core/dk.sdu.cbse.main.Main</argument>
-          </arguments>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
@@ -185,6 +163,40 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>run-game</id>
+      <activation>
+        <file>
+          <missing>src</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version> 3.5.0</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>java</executable>
+              <workingDirectory>.</workingDirectory>
+              <arguments>
+                <argument>--module-path=mods-mvn</argument>
+                <argument>--class-path=libs/*</argument>
+                <argument>--add-modules=Player,Bullet,Asteroid,javafx.graphics</argument>
+                <argument>--module=dk.sdu.cbse.core/dk.sdu.cbse.main.Main</argument>
+              </arguments>
+            </configuration>
           </plugin>
         </plugins>
       </build>

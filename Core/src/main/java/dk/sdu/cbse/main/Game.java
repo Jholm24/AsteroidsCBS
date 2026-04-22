@@ -1,4 +1,3 @@
-
 package dk.sdu.cbse.main;
 
 
@@ -41,7 +40,9 @@ class Game {
     public void start(Stage window) throws Exception {
         //ingen tæller til antal asteroids
         Text text = new Text(10, 20, "Destroyed asteroids: 0");
+        text.setFill(Color.WHITE);
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        gameWindow.setStyle("-fx-background-color: black;");
         gameWindow.getChildren().add(text);
 
         Scene scene = new Scene(gameWindow);
