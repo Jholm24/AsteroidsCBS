@@ -23,11 +23,11 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
             double changeX = Math.cos(Math.toRadians(asteroid.getRotation()));
             double changeY = Math.sin(Math.toRadians(asteroid.getRotation()));
 
-            // Update position with velocity
+            //Ændre på changeX,Y for at gøre asteroiden langsommere eller hurtigere.
             asteroid.setX(asteroid.getX() + changeX * 0.5);
             asteroid.setY(asteroid.getY() + changeY * 0.5);
 
-            // Wrap around screen edges for seamless scrolling
+            //hvis astroiden rammer siden på skærmen teleportere den til modsatte side
             if (asteroid.getX() > gameData.getDisplayWidth()) {
                 asteroid.setX(0);
             } else if (asteroid.getX() < 0) {
@@ -61,9 +61,10 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
 
         // Set health for collision damage
         asteroid.setHealth(50);
+        asteroid.setDamage(10);
 
         // Set appearance
-        asteroid.setColor(Color.WHITE);
+        asteroid.setColor(Color.GREY);
 
         return asteroid;
     }

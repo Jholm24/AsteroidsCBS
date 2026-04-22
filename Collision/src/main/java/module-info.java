@@ -1,0 +1,16 @@
+module Collision {
+    exports dk.sdu.cbse.collision;
+
+    requires dk.sdu.cbse.common;
+    requires java.datatransfer;
+    requires java.desktop;
+    requires javafx.graphics;
+
+    // Import the concrete entity types
+    requires CommonAsteroid;
+    requires CommonBullet;
+    requires Player;
+
+    provides dk.sdu.cbse.common.services.IEntityProcessingService with dk.sdu.cbse.collision.Collision;
+}
+

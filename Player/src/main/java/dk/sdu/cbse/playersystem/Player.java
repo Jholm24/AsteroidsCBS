@@ -9,7 +9,7 @@ public class Player extends Entity implements IPlayer {
 
     public Player() {
         this.setColor(Color.BLUE);
-        this.setHealth(100);
+        this.setHealth(10);
     }
 
 }
