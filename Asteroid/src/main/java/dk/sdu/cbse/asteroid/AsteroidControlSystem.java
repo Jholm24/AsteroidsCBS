@@ -16,8 +16,14 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
     private static final Random RANDOM = new Random();
 
     @Override
-
     public void process(GameData gameData, World world) {
+        long now = System.currentTimeMillis();
+        while (!gameData.getPendingAsteroidSpawns().isEmpty()
+                && gameData.getPendingAsteroidSpawns().peek() <= now) {
+            gameData.getPendingAsteroidSpawns().poll();
+            world.addEntity(createAsteroid(null, gameData));
+        }
+
         for (Entity asteroid : world.getEntities(Asteroid.class)) {
             // Get the asteroid's current velocity from rotation (direction angle)
             double changeX = Math.cos(Math.toRadians(asteroid.getRotation()));
@@ -52,12 +58,30 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
         // Set polygon shape (diamond-like shape)
         asteroid.setPolygonCoordinates(generateRandomPolygon(asteroid.getRadius()));
 
-        // Random position on screen
-        asteroid.setX(Math.random() * gameData.getDisplayWidth());
-        asteroid.setY(Math.random() * gameData.getDisplayHeight());
-
-        // Random direction (rotation determines movement direction)
-        asteroid.setRotation(Math.random() * 360);
+        // Spawn on a random edge, facing inward
+        int edge = RANDOM.nextInt(4);
+        switch (edge) {
+            case 0 -> { // top
+                asteroid.setX(RANDOM.nextDouble() * gameData.getDisplayWidth());
+                asteroid.setY(0);
+                asteroid.setRotation(RANDOM.nextDouble() * 180); // 0-180 points downward
+            }
+            case 1 -> { // right
+                asteroid.setX(gameData.getDisplayWidth());
+                asteroid.setY(RANDOM.nextDouble() * gameData.getDisplayHeight());
+                asteroid.setRotation(90 + RANDOM.nextDouble() * 180); // 90-270 points leftward
+            }
+            case 2 -> { // bottom
+                asteroid.setX(RANDOM.nextDouble() * gameData.getDisplayWidth());
+                asteroid.setY(gameData.getDisplayHeight());
+                asteroid.setRotation(180 + RANDOM.nextDouble() * 180); // 180-360 points upward
+            }
+            default -> { // left
+                asteroid.setX(0);
+                asteroid.setY(RANDOM.nextDouble() * gameData.getDisplayHeight());
+                asteroid.setRotation(RANDOM.nextDouble() * 180 - 90); // -90 to 90 points rightward
+            }
+        }
 
         // Set health for collision damage
         asteroid.setHealth(50);

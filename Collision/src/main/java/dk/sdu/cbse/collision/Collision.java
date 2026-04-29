@@ -22,7 +22,7 @@ public class Collision implements IEntityProcessingService {
         for (Entity e1 : world.getEntities()) {
             for (Entity e2 : world.getEntities()) {
                 if (e1 != e2 && isColliding(e1, e2)) {
-                    handleCollision(e1, e2, entitiesToRemove);
+                    handleCollision(e1, e2, entitiesToRemove, gameData);
                 }
             }
         }
@@ -33,17 +33,17 @@ public class Collision implements IEntityProcessingService {
         }
     }
 
-    private void handleCollision(Entity e1, Entity e2, List<Entity> entitiesToRemove) {
+    private void handleCollision(Entity e1, Entity e2, List<Entity> entitiesToRemove, GameData gameData) {
         // Player hits Asteroid - Player takes damage
         if (e1 instanceof IPlayer && e2 instanceof Asteroid) {
             // Check if either entity is immune
             if (!e1.isImmune() && !e2.isImmune()) {
-                handlePlayerAsteroidCollision(e1, (Asteroid) e2);
+                handlePlayerAsteroidCollision(e1, (Asteroid) e2, gameData);
             }
         } else if (e1 instanceof Asteroid && e2 instanceof IPlayer) {
             // Check if either entity is immune
             if (!e1.isImmune() && !e2.isImmune()) {
-                handlePlayerAsteroidCollision(e2, (Asteroid) e1);
+                handlePlayerAsteroidCollision(e2, (Asteroid) e1, gameData);
             }
         }
 
@@ -51,12 +51,12 @@ public class Collision implements IEntityProcessingService {
         else if (e1 instanceof Bullet && e2 instanceof Asteroid) {
             // Check if asteroid is immune
             if (!e2.isImmune()) {
-                handleBulletAsteroidCollision((Bullet) e1, (Asteroid) e2, entitiesToRemove);
+                handleBulletAsteroidCollision((Bullet) e1, (Asteroid) e2, entitiesToRemove, gameData);
             }
         } else if (e1 instanceof Asteroid && e2 instanceof Bullet) {
             // Check if asteroid is immune
             if (!e1.isImmune()) {
-                handleBulletAsteroidCollision((Bullet) e2, (Asteroid) e1, entitiesToRemove);
+                handleBulletAsteroidCollision((Bullet) e2, (Asteroid) e1, entitiesToRemove, gameData);
             }
         }
 
@@ -69,25 +69,23 @@ public class Collision implements IEntityProcessingService {
         }
     }
 
-    private void handlePlayerAsteroidCollision(Entity player, Asteroid asteroid) {
-        // Player takes damage (e.g., 10 health points)
+    private void handlePlayerAsteroidCollision(Entity player, Asteroid asteroid, GameData gameData) {
         float damage = 10f;
         player.setDamage(damage);
         player.setLastCollisionTime(System.currentTimeMillis());
         asteroid.setLastCollisionTime(System.currentTimeMillis());
-        if (player instanceof IPlayer) {
-            //spillet slutter hvis health == 0
-
-        }
         System.out.println("Player hit by asteroid! Health: " + player.getHealth() + " (Immune for 3 seconds)");
+        if (player.getHealth() <= 0) {
+            gameData.setGameOver(true);
+        }
     }
 
-    private void handleBulletAsteroidCollision(Bullet bullet, Asteroid asteroid, List<Entity> entitiesToRemove) {
-        // Mark both bullet and asteroid for removal
+    private void handleBulletAsteroidCollision(Bullet bullet, Asteroid asteroid, List<Entity> entitiesToRemove, GameData gameData) {
         entitiesToRemove.add(bullet);
         entitiesToRemove.add(asteroid);
         asteroid.setLastCollisionTime(System.currentTimeMillis());
-        System.out.println("Asteroid destroyed by bullet!");
+        gameData.incrementDestroyedAsteroids();
+        gameData.addPendingAsteroidSpawn(System.currentTimeMillis() + 500);
     }
 
     private void handleAsteroidAsteroidCollision(Asteroid asteroid1, Asteroid asteroid2) {
@@ -103,8 +101,6 @@ public class Collision implements IEntityProcessingService {
         // Set immunity time for both asteroids
         asteroid1.setLastCollisionTime(System.currentTimeMillis());
         asteroid2.setLastCollisionTime(System.currentTimeMillis());
-
-        System.out.println("Asteroids collided! Changing direction... (Both immune for 3 seconds)");
     }
 
     private boolean isColliding(Entity e1, Entity e2) {
