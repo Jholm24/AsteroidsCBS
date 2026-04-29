@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javafx.scene.layout.GridPane;
+import javafx.geometry.HPos;
 
 class Game {
 
@@ -38,9 +40,13 @@ class Game {
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProcessingService> entityProcessingServiceList;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
+    private final Scoreboard scoreboard = new Scoreboard();
     private AnimationTimer animationTimer;
     private VBox gameOverOverlay;
     private Text destroyedText;
+    private Text timerText;
+    private long gameStartNano = 0;
+    private long elapsedSeconds = 0;
     private static final double HEALTH_BAR_WIDTH = 200;
     private static final double HEALTH_BAR_HEIGHT = 14;
     private Rectangle healthBar;
@@ -55,9 +61,11 @@ class Game {
     public void start(Stage window) throws Exception {
         destroyedText = new Text(10, 20, "Destroyed asteroids: 0");
         destroyedText.setFill(Color.WHITE);
+        timerText = new Text(10, 40, "Time: 0s");
+        timerText.setFill(Color.WHITE);
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.setStyle("-fx-background-color: black;");
-        gameWindow.getChildren().add(destroyedText);
+        gameWindow.getChildren().addAll(destroyedText, timerText);
 
         Scene scene = new Scene(gameWindow);
         scene.setOnKeyPressed(event -> {
@@ -133,11 +141,15 @@ class Game {
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (gameStartNano == 0) {
+                    gameStartNano = now;
+                }
                 if (gameData.isGameOver()) {
                     stop();
                     showGameOver();
                     return;
                 }
+                elapsedSeconds = (now - gameStartNano) / 1_000_000_000L;
                 update();
                 draw();
                 gameData.getKeys().update();
@@ -147,17 +159,54 @@ class Game {
     }
 
     private void showGameOver() {
+        scoreboard.addEntry(gameData.getDestroyedAsteroids(), elapsedSeconds);
+
         Text gameOverText = new Text("GAME OVER");
         gameOverText.setFill(Color.RED);
         gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 72));
+
+        Text scoreText = new Text("Asteroids destroyed: " + gameData.getDestroyedAsteroids() + "  |  Time survived: " + elapsedSeconds + "s");
+        scoreText.setFill(Color.YELLOW);
+        scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+
+        Text boardTitle = new Text("- HIGH SCORES -");
+        boardTitle.setFill(Color.WHITE);
+        boardTitle.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+
+        GridPane grid = new GridPane();
+        grid.setHgap(40);
+        grid.setVgap(6);
+        grid.setAlignment(Pos.CENTER);
+
+        List<Scoreboard.Entry> entries = scoreboard.getEntries();
+        for (int i = 0; i < entries.size(); i++) {
+            Scoreboard.Entry e = entries.get(i);
+            Text rank = new Text((i + 1) + ".");
+            Text asteroids = new Text(e.asteroidsDestroyed() + " asteroids");
+            Text time = new Text(e.secondsSurvived() + "s");
+            Color rowColor = (i == 0) ? Color.GOLD : Color.LIGHTGRAY;
+            rank.setFill(rowColor);
+            asteroids.setFill(rowColor);
+            time.setFill(rowColor);
+            rank.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+            asteroids.setFont(Font.font("Arial", 18));
+            time.setFont(Font.font("Arial", 18));
+            GridPane.setHalignment(rank, HPos.RIGHT);
+            GridPane.setHalignment(asteroids, HPos.LEFT);
+            GridPane.setHalignment(time, HPos.RIGHT);
+            grid.add(rank, 0, i);
+            grid.add(asteroids, 1, i);
+            grid.add(time, 2, i);
+        }
 
         Button restartButton = new Button("RESTART");
         restartButton.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         restartButton.setOnAction(e -> restart());
 
-        gameOverOverlay = new VBox(30, gameOverText, restartButton);
+        gameOverOverlay = new VBox(18, gameOverText, scoreText, boardTitle, grid, restartButton);
         gameOverOverlay.setAlignment(Pos.CENTER);
         gameOverOverlay.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        gameOverOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.75);");
 
         gameWindow.getChildren().add(gameOverOverlay);
     }
@@ -174,6 +223,8 @@ class Game {
         gameData.setGameOver(false);
         gameData.resetDestroyedAsteroids();
         gameData.clearPendingAsteroidSpawns();
+        gameStartNano = 0;
+        elapsedSeconds = 0;
         for (IGamePluginService plugin : gamePluginServices) {
             plugin.start(gameData, world);
         }
@@ -199,6 +250,7 @@ class Game {
 
     private void draw() {
         destroyedText.setText("Destroyed asteroids: " + gameData.getDestroyedAsteroids());
+        timerText.setText("Time: " + elapsedSeconds + "s");
 
         // Update health bar based on current player health percentage
         for (Entity e : world.getEntities()) {
