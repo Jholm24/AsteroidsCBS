@@ -25,7 +25,26 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayerShip(GameData gameData) {
 
         Entity playerShip = new Player();
-        playerShip.setPolygonCoordinates(-5,-5,10,0,-5,5);
+        playerShip.setPolygonCoordinates(
+                -16, -4,
+                -20, -8,   // øverste finne
+                -12, -4,
+                6, -4,
+                12, 0,     // snude
+
+                // bund
+                6, 4,
+                -12, 4,
+                -20, 8,    // nederste finne
+                -16, 4,
+
+                //flamme
+                -22, 3,
+                -30, 1,
+                -26, 0,
+                -30, -1,
+                -22, -3
+        );
         playerShip.setX(gameData.getDisplayHeight()/2);
         playerShip.setY(gameData.getDisplayWidth()/2);
         playerShip.setRadius(8);

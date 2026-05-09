@@ -9,19 +9,36 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Asteroids</artifactId>
+    <groupId>dk.sdu.cbse.collision</groupId>
+    <artifactId>Collision</artifactId>
 
     <properties>
-        <java>java</java>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
-        <spring.version>6.1.3</spring.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
             <groupId>dk.sdu.cbse</groupId>
             <artifactId>Common</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>dk.sdu.cbse.commonasteroid</groupId>
+            <artifactId>CommonAsteroid</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>dk.sdu.cbse.commonbullet</groupId>
+            <artifactId>CommonBullet</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>dk.sdu.cbse</groupId>
+            <artifactId>Player</artifactId>
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
