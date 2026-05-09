@@ -9,7 +9,7 @@ class Scoreboard {
 
     record Entry(int asteroidsDestroyed, long secondsSurvived) {}
 
-    private static final String FILE_PATH = System.getProperty("user.home") + "/asteroids_scores.csv";
+    private static final String FILE_PATH = System.getProperty("user.dir") + "/asteroids_scores.csv";
     private static final int MAX_ENTRIES = 10;
 
     private final List<Entry> entries = new ArrayList<>();

@@ -9,8 +9,8 @@ public class Player extends Entity implements IPlayer {
 
     public Player() {
         this.setColor(Color.BLUE);
-        this.setHealth(30);
-        this.setImmuneDurationMs(5000);
+        this.setHealth(50);
+        this.setImmuneDurationMs(3000);
     }
 
 }
