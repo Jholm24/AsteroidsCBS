@@ -9,7 +9,8 @@ module Collision {
     // Import the concrete entity types
     requires CommonAsteroid;
     requires CommonBullet;
-    requires Player;
+
+    uses dk.sdu.cbse.commonasteroid.AsteroidSPI;
 
     provides dk.sdu.cbse.common.services.IEntityProcessingService with dk.sdu.cbse.collision.Collision;
 }

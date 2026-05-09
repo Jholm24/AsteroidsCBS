@@ -4,4 +4,8 @@ import dk.sdu.cbse.common.data.Entity;
 
 public class Asteroid extends Entity {
 
+    public Asteroid() {
+        setImmuneDurationMs(500);
+    }
+
 }

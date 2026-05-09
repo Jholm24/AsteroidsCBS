@@ -1,7 +1,5 @@
 package dk.sdu.cbse.common.data;
 
-import dk.sdu.cbse.common.entities.asteroids.IAsteroids;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,9 +44,5 @@ public class World {
         return entityMap.get(ID);
     }
 
-    public Entity[] getEntities(Class<IAsteroids> iAsteroidsClass) {
-        return entityMap.values().stream()
-                .filter(iAsteroidsClass::isInstance)
-                .toArray(Entity[]::new);
-    }
+
 }

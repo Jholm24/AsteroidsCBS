@@ -17,7 +17,7 @@ public class Entity implements Serializable {
     private float damage;
     private Color color;
     private long lastCollisionTime = 0;
-    private static final long IMMUNE_DURATION_MS = 3000; // 3 seconds in milliseconds
+    private long immuneDurationMs = 3000;
 
 
     public String getID() {
@@ -99,9 +99,13 @@ public class Entity implements Serializable {
         return this.lastCollisionTime;
     }
 
+    public void setImmuneDurationMs(long ms) {
+        this.immuneDurationMs = ms;
+    }
+
     public boolean isImmune() {
         long currentTime = System.currentTimeMillis();
-        return (currentTime - lastCollisionTime) < IMMUNE_DURATION_MS;
+        return (currentTime - lastCollisionTime) < immuneDurationMs;
     }
 
 }

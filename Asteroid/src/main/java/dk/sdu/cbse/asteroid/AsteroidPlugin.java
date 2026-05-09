@@ -15,10 +15,9 @@ public class AsteroidPlugin implements IGamePluginService {
 
         // Create 5 asteroids with random positions and directions
         System.out.println("AsteroidPlugin: Creating asteroids...");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Entity asteroid = asteroidControlSystem.createAsteroid(null, gameData);
             world.addEntity(asteroid);
-            System.out.println("AsteroidPlugin: Created asteroid " + (i + 1) + " at (" + asteroid.getX() + ", " + asteroid.getY() + ")");
         }
         System.out.println("AsteroidPlugin: Total asteroids in world: " + world.getEntities().size());
     }

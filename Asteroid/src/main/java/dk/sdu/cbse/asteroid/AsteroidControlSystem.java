@@ -8,6 +8,7 @@ import dk.sdu.cbse.commonasteroid.Asteroid;
 import dk.sdu.cbse.commonasteroid.AsteroidSPI;
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class AsteroidControlSystem implements IEntityProcessingService, AsteroidSPI {
@@ -21,7 +22,9 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
         while (!gameData.getPendingAsteroidSpawns().isEmpty()
                 && gameData.getPendingAsteroidSpawns().peek() <= now) {
             gameData.getPendingAsteroidSpawns().poll();
-            world.addEntity(createAsteroid(null, gameData));
+            if (world.getEntities(Asteroid.class).size() < 15) {
+                world.addEntity(createAsteroid(null, gameData));
+            }
         }
 
         for (Entity asteroid : world.getEntities(Asteroid.class)) {
@@ -52,13 +55,12 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
     public Entity createAsteroid(Entity e, GameData gameData) {
         Entity asteroid = new Asteroid();
 
-        // Asteroid size
-        asteroid.setRadius(15);
+        asteroid.setRadius(25 + RANDOM.nextInt(10));
 
-        // Set polygon shape (diamond-like shape)
+        // Sets the shape of the asteroids
         asteroid.setPolygonCoordinates(generateRandomPolygon(asteroid.getRadius()));
 
-        // Spawn on a random edge, facing inward
+        //Spawn new asteroids at edge of the screen so the player isnt damaged when new ones spawn
         int edge = RANDOM.nextInt(4);
         switch (edge) {
             case 0 -> { // top
@@ -82,14 +84,10 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
                 asteroid.setRotation(RANDOM.nextDouble() * 180 - 90); // -90 to 90 points rightward
             }
         }
-
-        // Set health for collision damage
         asteroid.setHealth(50);
         asteroid.setDamage(10);
-
-        // Set appearance
         asteroid.setColor(Color.GREY);
-
+        System.out.println("Asteroid spawned at (" + (int) asteroid.getX() + ", " + (int) asteroid.getY() + ") with radius " + asteroid.getRadius());
         return asteroid;
     }
 
@@ -105,7 +103,28 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
             polygon[i * 2] = Math.cos(angle) * radius;
             polygon[i * 2 + 1] = Math.sin(angle) * radius;
         }
-
         return polygon;
     }
+
+    public void splitAsteroids(Asteroid splitAsteroid, World world){
+        int amountOfAsteroids = 2;
+        if (splitAsteroid.getRadius() >= 20 && world.getEntities(Asteroid.class).size() + amountOfAsteroids <= 15) {
+            for (int i = 0; i < amountOfAsteroids; i++) {
+                Asteroid asteroid = new Asteroid();
+                float newRadius = splitAsteroid.getRadius() / 2;
+                asteroid.setRadius(newRadius);
+                asteroid.setPolygonCoordinates(generateRandomPolygon(newRadius));
+                asteroid.setX(splitAsteroid.getX() + (i == 0 ? 10 : -10));
+                asteroid.setY(splitAsteroid.getY() + (i == 0 ? 10 : -10));
+                asteroid.setRotation(splitAsteroid.getRotation() + (i == 0 ? 45 : -45));
+                asteroid.setHealth(25);
+                asteroid.setDamage(5);
+                asteroid.setColor(Color.GREY);
+                System.out.println("Asteroid split: new asteroid at (" + (int) asteroid.getX() + ", " + (int) asteroid.getY() + ") with radius " + asteroid.getRadius());
+                world.addEntity(asteroid);
+            }
+        }
+    }
+
+
 }

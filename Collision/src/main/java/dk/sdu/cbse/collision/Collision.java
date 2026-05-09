@@ -6,10 +6,12 @@ import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.entities.player.IPlayer;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.commonasteroid.Asteroid;
+import dk.sdu.cbse.commonasteroid.AsteroidSPI;
 import dk.sdu.cbse.commonbullet.Bullet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.ServiceLoader;
 
 public class Collision implements IEntityProcessingService {
 
@@ -22,7 +24,7 @@ public class Collision implements IEntityProcessingService {
         for (Entity e1 : world.getEntities()) {
             for (Entity e2 : world.getEntities()) {
                 if (e1 != e2 && isColliding(e1, e2)) {
-                    handleCollision(e1, e2, entitiesToRemove, gameData);
+                    handleCollision(e1, e2, entitiesToRemove, gameData, world);
                 }
             }
         }
@@ -33,7 +35,7 @@ public class Collision implements IEntityProcessingService {
         }
     }
 
-    private void handleCollision(Entity e1, Entity e2, List<Entity> entitiesToRemove, GameData gameData) {
+    private void handleCollision(Entity e1, Entity e2, List<Entity> entitiesToRemove, GameData gameData, World world) {
         // Player hits Asteroid - Player takes damage
         if (e1 instanceof IPlayer && e2 instanceof Asteroid) {
             // Check if either entity is immune
@@ -51,12 +53,12 @@ public class Collision implements IEntityProcessingService {
         else if (e1 instanceof Bullet && e2 instanceof Asteroid) {
             // Check if asteroid is immune
             if (!e2.isImmune()) {
-                handleBulletAsteroidCollision((Bullet) e1, (Asteroid) e2, entitiesToRemove, gameData);
+                handleBulletAsteroidCollision((Bullet) e1, (Asteroid) e2, entitiesToRemove, gameData, world);
             }
         } else if (e1 instanceof Asteroid && e2 instanceof Bullet) {
             // Check if asteroid is immune
             if (!e1.isImmune()) {
-                handleBulletAsteroidCollision((Bullet) e2, (Asteroid) e1, entitiesToRemove, gameData);
+                handleBulletAsteroidCollision((Bullet) e2, (Asteroid) e1, entitiesToRemove, gameData, world);
             }
         }
 
@@ -80,7 +82,8 @@ public class Collision implements IEntityProcessingService {
         }
     }
 
-    private void handleBulletAsteroidCollision(Bullet bullet, Asteroid asteroid, List<Entity> entitiesToRemove, GameData gameData) {
+    private void handleBulletAsteroidCollision(Bullet bullet, Asteroid asteroid, List<Entity> entitiesToRemove, GameData gameData, World world) {
+        ServiceLoader.load(AsteroidSPI.class).findFirst().ifPresent(spi -> spi.splitAsteroids(asteroid, world));
         entitiesToRemove.add(bullet);
         entitiesToRemove.add(asteroid);
         asteroid.setLastCollisionTime(System.currentTimeMillis());
