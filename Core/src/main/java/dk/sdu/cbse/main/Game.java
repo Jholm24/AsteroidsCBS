@@ -14,6 +14,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -64,7 +70,18 @@ class Game {
         timerText = new Text(10, 40, "Time: 0s");
         timerText.setFill(Color.WHITE);
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        gameWindow.setStyle("-fx-background-color: black;");
+        var bgUrl = getClass().getResource("/space.png");
+        if (bgUrl != null) {
+            BackgroundImage bg = new BackgroundImage(
+                new Image(bgUrl.toExternalForm()),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(1.0, 1.0, true, true, false, false)
+            );
+            gameWindow.setBackground(new Background(bg));
+        } else {
+            gameWindow.setStyle("-fx-background-color: black;");
+        }
         gameWindow.getChildren().addAll(destroyedText, timerText);
 
         Scene scene = new Scene(gameWindow);
@@ -228,11 +245,9 @@ class Game {
         for (IGamePluginService plugin : gamePluginServices) {
             plugin.start(gameData, world);
         }
-        // Re-capture max health in case it changed, and reset bar to full
         for (Entity e : world.getEntities()) {
             if (e instanceof IPlayer) {
-                playerMaxHealth = e.getHealth();
-                break;
+                playerMaxHealth = e.getHealth();break;
             }
         }
         healthBar.setWidth(HEALTH_BAR_WIDTH);
@@ -282,8 +297,10 @@ class Game {
             polygon.setTranslateX(entity.getX());
             polygon.setTranslateY(entity.getY());
             polygon.setRotate(entity.getRotation());
+            if (entity instanceof IPlayer && entity.isImmune()) {
+                polygon.setFill(System.currentTimeMillis() % 200 < 100 ? Color.WHITE : entity.getColor());
+            }
         }
-
     }
 
     public List<IGamePluginService> getGamePluginServices() {

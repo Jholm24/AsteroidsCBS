@@ -22,7 +22,7 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
         while (!gameData.getPendingAsteroidSpawns().isEmpty()
                 && gameData.getPendingAsteroidSpawns().peek() <= now) {
             gameData.getPendingAsteroidSpawns().poll();
-            if (world.getEntities(Asteroid.class).size() < 15) {
+            if (world.getEntities(Asteroid.class).size() < 12) {
                 world.addEntity(createAsteroid(null, gameData));
             }
         }
@@ -108,7 +108,7 @@ public class AsteroidControlSystem implements IEntityProcessingService, Asteroid
 
     public void splitAsteroids(Asteroid splitAsteroid, World world){
         int amountOfAsteroids = 2;
-        if (splitAsteroid.getRadius() >= 20 && world.getEntities(Asteroid.class).size() + amountOfAsteroids <= 15) {
+        if (splitAsteroid.getRadius() >= 20 && world.getEntities(Asteroid.class).size() + amountOfAsteroids <= 12) {
             for (int i = 0; i < amountOfAsteroids; i++) {
                 Asteroid asteroid = new Asteroid();
                 float newRadius = splitAsteroid.getRadius() / 2;
