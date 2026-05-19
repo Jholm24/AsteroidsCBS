@@ -175,7 +175,7 @@ public class Collision implements IEntityProcessingService {
         double rotationChange1 = 180 + (random.nextDouble() - 0.5) * 90;
         double rotationChange2 = 180 + (random.nextDouble() - 0.5) * 90;
 
-        // Apply rotation changes
+
         asteroid1.setRotation(asteroid1.getRotation() + rotationChange1);
         asteroid2.setRotation(asteroid2.getRotation() + rotationChange2);
 
