@@ -67,3 +67,9 @@ run/
 
 # Maven mods directory (based on your structure)
 mods-mvn/
+# H2 database files (generated at runtime by ScoringService)
+*.mv.db
+*.trace.db
+
+# Built service JARs
+services/

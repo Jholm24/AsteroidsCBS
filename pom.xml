@@ -20,7 +20,9 @@
     <module>Asteroid</module>
     <module>Collision</module>
     <module>Enemy</module>
-
+    <module>CommonScoring</module>
+    <module>ScoreClient</module>
+    <module>ScoringService</module>
   </modules>
   <properties>
     <java>java</java>
@@ -131,6 +133,9 @@
                   <excludes>
                     <exclude>.gitkeep</exclude>
                   </excludes>
+                </fileset>
+                <fileset>
+                  <directory>services</directory>
                 </fileset>
               </filesets>
             </configuration>

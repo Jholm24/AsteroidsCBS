@@ -3,6 +3,7 @@ module dk.sdu.cbse.core {
     requires javafx.graphics;
     requires spring.context;
     requires dk.sdu.cbse.common;
+    requires CommonScoring;
     requires java.desktop;
 
     exports dk.sdu.cbse.main;
@@ -11,4 +12,5 @@ module dk.sdu.cbse.core {
     uses dk.sdu.cbse.common.services.IGamePluginService;
     uses dk.sdu.cbse.common.services.IEntityProcessingService;
     uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
+    uses dk.sdu.cbse.commonscoring.IScoringService;
 }
