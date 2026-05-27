@@ -179,8 +179,6 @@ public class Collision implements IEntityProcessingService {
         asteroid1.setRotation(asteroid1.getRotation() + rotationChange1);
         asteroid2.setRotation(asteroid2.getRotation() + rotationChange2);
 
-
-        // Set immunity time for both asteroids
         asteroid1.setLastCollisionTime(System.currentTimeMillis());
         asteroid2.setLastCollisionTime(System.currentTimeMillis());
     }
@@ -191,7 +189,7 @@ public class Collision implements IEntityProcessingService {
         double dy = e1.getY() - e2.getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Check if distance is less than sum of radii (collision detection)
+        // Check if distance is less than sum of radius (collision detection)
         float minDistance = e1.getRadius() + e2.getRadius();
         return distance < minDistance;
     }
