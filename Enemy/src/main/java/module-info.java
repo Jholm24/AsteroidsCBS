@@ -1,4 +1,5 @@
 module Enemy {
+    exports dk.sdu.cbse.splittest;
     requires dk.sdu.cbse.common;
     requires CommonBullet;
     requires javafx.graphics;

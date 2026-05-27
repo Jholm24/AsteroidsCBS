@@ -1,4 +1,5 @@
 module Player {
+    exports dk.sdu.cbse.splittest;
     requires dk.sdu.cbse.common;
     requires java.datatransfer;
     requires java.desktop;

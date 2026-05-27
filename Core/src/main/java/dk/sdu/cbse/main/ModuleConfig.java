@@ -6,6 +6,7 @@ import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -25,16 +26,28 @@ class ModuleConfig {
 
     @Bean
     public List<IEntityProcessingService> entityProcessingServiceList(){
-        return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        // Collect from boot layer (mods-mvn) + child layer (plugins/)
+        List<IEntityProcessingService> services = new ArrayList<>(
+                ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList()));
+        services.addAll(PluginLoader.loadPluginServices(IEntityProcessingService.class));
+        return services;
     }
 
     @Bean
     public List<IGamePluginService> gamePluginServices() {
-        return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        // Collect from boot layer (mods-mvn) + child layer (plugins/)
+        List<IGamePluginService> services = new ArrayList<>(
+                ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList()));
+        services.addAll(PluginLoader.loadPluginServices(IGamePluginService.class));
+        return services;
     }
 
     @Bean
     public List<IPostEntityProcessingService> postEntityProcessingServices() {
-        return ServiceLoader.load(IPostEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        // Collect from boot layer (mods-mvn) + child layer (plugins/)
+        List<IPostEntityProcessingService> services = new ArrayList<>(
+                ServiceLoader.load(IPostEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList()));
+        services.addAll(PluginLoader.loadPluginServices(IPostEntityProcessingService.class));
+        return services;
     }
 }

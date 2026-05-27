@@ -126,6 +126,12 @@
                 <fileset>
                   <directory>libs</directory>
                 </fileset>
+                <fileset>
+                  <directory>plugins</directory>
+                  <excludes>
+                    <exclude>.gitkeep</exclude>
+                  </excludes>
+                </fileset>
               </filesets>
             </configuration>
           </plugin>
