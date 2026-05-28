@@ -14,4 +14,3 @@ Write-Host "Building project..." -ForegroundColor Green
 mvn install -DskipClean=true
 
 Write-Host "Build complete!" -ForegroundColor Cyan
-
