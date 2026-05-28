@@ -9,7 +9,7 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
     <groupId>dk.sdu.cbse.scoringservice</groupId>
-    <artifactId>ScoringService</artifactId>
+    <artifactId>ScoreService</artifactId>
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <maven.compiler.source>21</maven.compiler.source>

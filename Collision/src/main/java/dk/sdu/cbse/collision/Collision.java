@@ -9,8 +9,6 @@ import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.commonasteroid.Asteroid;
 import dk.sdu.cbse.commonasteroid.AsteroidSPI;
 import dk.sdu.cbse.commonbullet.Bullet;
-import javafx.concurrent.Task;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,8 +143,7 @@ public class Collision implements IEntityProcessingService {
     }
 
     private void handlePlayerAsteroidCollision(Entity player, Asteroid asteroid, GameData gameData) {
-        float damage = 10f;
-        player.setDamage(damage);
+        player.setDamage(10f);
         player.setLastCollisionTime(System.currentTimeMillis());
         asteroid.setLastCollisionTime(System.currentTimeMillis());
         System.out.println("Player hit by asteroid! Health: " + player.getHealth());
@@ -183,7 +180,7 @@ public class Collision implements IEntityProcessingService {
         asteroid2.setLastCollisionTime(System.currentTimeMillis());
     }
 
-    private boolean isColliding(Entity e1, Entity e2) {
+    boolean isColliding(Entity e1, Entity e2) {
         // Calculate distance between two entities
         double dx = e1.getX() - e2.getX();
         double dy = e1.getY() - e2.getY();
