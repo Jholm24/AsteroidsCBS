@@ -6,6 +6,7 @@ import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.entities.enemy.IEnemy;
 import dk.sdu.cbse.common.entities.player.IPlayer;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
+import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.commonasteroid.Asteroid;
 import dk.sdu.cbse.commonasteroid.AsteroidSPI;
 import dk.sdu.cbse.commonbullet.Bullet;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ServiceLoader;
 
-public class Collision implements IEntityProcessingService {
+public class Collision implements IPostEntityProcessingService {
 
     private final Random random = new Random();
 

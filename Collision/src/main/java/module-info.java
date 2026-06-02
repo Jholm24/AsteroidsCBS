@@ -12,6 +12,6 @@ module Collision {
 
     uses dk.sdu.cbse.commonasteroid.AsteroidSPI;
 
-    provides dk.sdu.cbse.common.services.IEntityProcessingService with dk.sdu.cbse.collision.Collision;
+    provides dk.sdu.cbse.common.services.IPostEntityProcessingService with dk.sdu.cbse.collision.Collision;
 }
 
