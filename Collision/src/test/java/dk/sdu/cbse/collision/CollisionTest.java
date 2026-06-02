@@ -39,7 +39,6 @@ class CollisionTest {
         b.setX(100); b.setY(0);  b.setRadius(10); // distance=100, sum=20
         assertFalse(collision.isColliding(a, b));
     }
-
     @Test
     void entities_exactly_at_sum_of_radii_should_not_collide() {
         a.setX(0);  a.setY(0); a.setRadius(10);
@@ -53,14 +52,12 @@ class CollisionTest {
         b.setX(6); b.setY(6); b.setRadius(10); // distance≈8.49, sum=20
         assertTrue(collision.isColliding(a, b));
     }
-
     @Test
     void same_entity_different_instance_at_same_position_should_collide() {
         a.setX(0); a.setY(0); a.setRadius(10);
         b.setX(0); b.setY(0); b.setRadius(10); // distance=0, sum=20
         assertTrue(collision.isColliding(a, b));
     }
-
     @Test
     void zero_radius_entities_at_same_position_should_not_collide() {
         a.setX(0); a.setY(0); a.setRadius(0);
